@@ -927,25 +927,31 @@ elasticsearch.serviceToken: "AAEAAWVsYXN0aWMva2liYW5hL215LWtpYmFuYS10b2tlbjp3cS1
 ## 5. Скриншоты
 
 - Схема/список ресурсов в Yandex Cloud
+
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/6.png)
 
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/7.png)
 
 - Рабочий сайт через ALB
+
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/1.png)
 
 - Скриншот Zabbix Dashboard с web-серверами
+
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/2.png)
 
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/4.png)
 
 - Скриншот Discover Kibana с сегодняшними логами nginx
+
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/3.png)
 
 - Скриншот расписания снапшотов (Backup)
+
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/5.png)
 
 - Скриншот терминала с curl к ALB
+
 ![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/8.png)
 
 ---
