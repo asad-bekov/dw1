@@ -57,7 +57,6 @@ resource "yandex_vpc_network" "default" {
   name = "default-network"
 }
 
-# Подсеть в зоне ru-central1-a
 resource "yandex_vpc_subnet" "public" {
   name           = "public-subnet-a"
   zone           = "ru-central1-a"
@@ -65,7 +64,6 @@ resource "yandex_vpc_subnet" "public" {
   v4_cidr_blocks = ["10.1.0.0/24"]
 }
 
-# Подсеть в зоне ru-central1-b 
 resource "yandex_vpc_subnet" "public_b" {
   name           = "public-subnet-b"
   zone           = "ru-central1-b"
@@ -73,7 +71,6 @@ resource "yandex_vpc_subnet" "public_b" {
   v4_cidr_blocks = ["10.2.0.0/24"]
 }
 
-# Security Group для веб-серверов
 resource "yandex_vpc_security_group" "web_servers" {
   name       = "web-servers-sg"
   network_id = yandex_vpc_network.default.id
@@ -101,12 +98,11 @@ resource "yandex_vpc_security_group" "web_servers" {
 
   ingress {
     protocol       = "TCP"
-    port           = 10051 # Zabbix server / trapper
+    port           = 10051 
     v4_cidr_blocks = ["0.0.0.0/0"]
     description    = "Zabbix agent‑to‑server"
   }
 
-  # Разрешаем Zabbix-серверу опрашивать агентов на веб-нодах
   ingress {
     protocol       = "TCP"
     port           = 10050
@@ -122,7 +118,6 @@ resource "yandex_vpc_security_group" "web_servers" {
   }
 }
 
-# Security Group для ALB
 resource "yandex_vpc_security_group" "alb_access" {
   name       = "alb-access"
   network_id = yandex_vpc_network.default.id
@@ -148,7 +143,6 @@ resource "yandex_vpc_security_group" "alb_access" {
   }
 }
 
-# NAT‑шлюз для приватных подсетей (Managed NAT Gateway)
 resource "yandex_vpc_gateway" "private_nat" {
   name = "private-nat-gateway"
 }
@@ -175,7 +169,7 @@ resource "yandex_vpc_security_group" "db" {
 resource "yandex_alb_target_group" "zbx_tg" {
   name = "zabbix-tg"
   target {
-    subnet_id  = yandex_vpc_subnet.public.id # 10.1.0.0/24
+    subnet_id  = yandex_vpc_subnet.public.id 
     ip_address = "10.1.0.4"
   }
 }
@@ -200,7 +194,6 @@ resource "yandex_alb_backend_group" "zbx_bg" {
   }
 }
 
-# private-подсеть для Elasticsearch
 resource "yandex_vpc_subnet" "private_es" {
   name           = "private-es-subnet"
   zone           = "ru-central1-a"
@@ -208,9 +201,7 @@ resource "yandex_vpc_subnet" "private_es" {
   v4_cidr_blocks = ["10.3.0.0/24"]
 }
 
-# (Канонически public-подсеть у вас уже есть как yandex_vpc_subnet.public)
 
-# SG для Elasticsearch
 resource "yandex_vpc_security_group" "es" {
   name       = "es-sg"
   network_id = yandex_vpc_network.default.id
@@ -218,7 +209,7 @@ resource "yandex_vpc_security_group" "es" {
   ingress {
     protocol       = "TCP"
     port           = 9200
-    v4_cidr_blocks = ["10.1.0.4/32"] # Zabbix, если надо
+    v4_cidr_blocks = ["10.1.0.4/32"] 
   }
 
   ingress {
@@ -230,7 +221,7 @@ resource "yandex_vpc_security_group" "es" {
   ingress {
     protocol       = "TCP"
     port           = 22
-    v4_cidr_blocks = ["10.10.1.11/32"] # внутренний IP bastion-хоста
+    v4_cidr_blocks = ["10.10.1.11/32"] 
     description    = "SSH from bastion"
 
   }
@@ -240,7 +231,6 @@ resource "yandex_vpc_security_group" "es" {
   }
 }
 
-# SG для Kibana
 resource "yandex_vpc_security_group" "kibana" {
   name       = "kibana-sg"
   network_id = yandex_vpc_network.default.id
@@ -367,14 +357,14 @@ resource "yandex_compute_instance" "elastic" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd83m7rp3r4l12c2keph" # Ubuntu 22.04 LTS
+      image_id = "fd83m7rp3r4l12c2keph" 
       size     = 20
     }
   }
 
   network_interface {
     subnet_id = yandex_vpc_subnet.private_es.id
-    security_group_ids = [yandex_vpc_security_group.es.id] # для elastic
+    security_group_ids = [yandex_vpc_security_group.es.id] 
     nat       = false
   }
 
@@ -400,14 +390,14 @@ resource "yandex_compute_instance" "kibana" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd83m7rp3r4l12c2keph" # Ubuntu 22.04 LTS
+      image_id = "fd83m7rp3r4l12c2keph" 
       size     = 15
     }
   }
 
   network_interface {
     subnet_id = yandex_vpc_subnet.private_es.id
-    security_group_ids = [yandex_vpc_security_group.kibana.id] # для kibana
+    security_group_ids = [yandex_vpc_security_group.kibana.id] 
     nat       = false
   }
 
@@ -496,10 +486,6 @@ output "web_instance_2_ip" {
   value = yandex_compute_instance.web_2.network_interface.0.ip_address
 }
 
-#output "load_balancer_ip" {
-#  vvalue = yandex_alb_load_balancer.web_lb.listener[0].endpoint[0].address[0].external_ipv4_address[0].address
-#}
-
 output "alb_external_ip" {
   value = yandex_alb_load_balancer.web_lb.listener[0].endpoint[0].address[0].external_ipv4_address[0].address
 }
@@ -548,7 +534,7 @@ variable "zone_b" {
 
 variable "image_id" {
   type    = string
-  default = "fd8vmcue7aajpmeo39kk" # Заменить на нужный ID образа
+  default = "fd8vmcue7aajpmeo39kk" 
 }
 
 variable "ssh_key_path" {
@@ -724,8 +710,8 @@ kibana
   hosts: web_servers
   become: yes
   vars:
-    zabbix_server_ip: 10.1.0.4      # IP вашего Zabbix-сервера (внутренний)
-    zabbix_version: "6.4"           # версия Zabbix, на которую вы ориентируетесь
+    zabbix_server_ip: 10.1.0.4      
+    zabbix_version: "6.4"           
 
   pre_tasks:
     - name: Ensure prerequisites are installed
@@ -940,23 +926,27 @@ elasticsearch.serviceToken: "AAEAAWVsYXN0aWMva2liYW5hL215LWtpYmFuYS10b2tlbjp3cS1
 
 ## 5. Скриншоты
 
+- Схема/список ресурсов в Yandex Cloud
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/6.png)
 
-![Схема/список ресурсов в Yandex Cloud](https://github.com/asad-bekov/dw-1/raw/main/img/6.png)
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/7.png)
 
-![Схема/список ресурсов в Yandex Cloud](https://github.com/asad-bekov/dw-1/raw/main/img/7.png)
+- Рабочий сайт через ALB
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/1.png)
 
-![Рабочий сайт через ALB](https://github.com/asad-bekov/dw-1/raw/main/img/1.png)
+- Скриншот Zabbix Dashboard с web-серверами
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/2.png)
 
-![Скриншот Zabbix Dashboard с вашими web-серверами](https://github.com/asad-bekov/dw-1/raw/main/img/2.png)
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/4.png)
 
-![Скриншот Zabbix Dashboard с вашими web-серверами](https://github.com/asad-bekov/dw-1/raw/main/img/4.png)
+- Скриншот Discover Kibana с сегодняшними логами nginx
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/3.png)
 
-![Скриншот Discover Kibana с сегодняшними логами nginx](https://github.com/asad-bekov/dw-1/raw/main/img/3.png)
+- Скриншот расписания снапшотов (Backup)
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/5.png)
 
-![Скриншот расписания снапшотов (Backup)](https://github.com/asad-bekov/dw-1/raw/main/img/5.png)
-
-
-![Скриншот терминала с curl к ALB](https://github.com/asad-bekov/dw-1/raw/main/img/8.png)
+- Скриншот терминала с curl к ALB
+![alt text](https://github.com/asad-bekov/dw-1/raw/main/img/8.png)
 
 ---
 
