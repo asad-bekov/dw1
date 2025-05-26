@@ -926,27 +926,28 @@ elasticsearch.serviceToken: "AAEAAWVsYXN0aWMva2liYW5hL215LWtpYmFuYS10b2tlbjp3cS1
 
 ## 5. Скриншоты
 
-- Схема/список ресурсов в Yandex Cloud
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/6.png)
+### Задание 1-2
+![Docker Compose и запуск](https://github.com/asad-bekov/hw-21/raw/main/img/1.png)
+![Проверка подключения к БД](https://github.com/asad-bekov/hw-21/raw/main/img/1.1.png)
 
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img//7.png)
+### Задание 3
+![Состояние контейнеров](https://github.com/asad-bekov/hw-21/raw/main/img/2.png)
+![Ответ сервиса](https://github.com/asad-bekov/hw-21/raw/main/img/2.1.png)
 
-- Рабочий сайт через ALB
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/1.png)
+### Задание 4
+![Доступ через внешний IP](https://github.com/asad-bekov/hw-21/raw/main/img/3.png)
+![SQL-результат запроса](https://github.com/asad-bekov/hw-21/raw/main/img/3.1.png)
 
-- Скриншот Zabbix Dashboard с web-серверами
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/2.png)
+### Задание 5
+![Резервные копии в директории /opt/backup](https://github.com/asad-bekov/hw-21/raw/main/img/4.png)
 
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/4.png)
+### Задание 6
+![Извлечение Terraform](https://github.com/asad-bekov/hw-21/raw/main/img/5.png)
+![Проверка terraform version](https://github.com/asad-bekov/hw-21/raw/main/img/6.png)
 
-- Скриншот Discover Kibana с сегодняшними логами nginx
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/3.png)
-
-- Скриншот расписания снапшотов (Backup)
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/5.png)
-
-- Скриншот терминала с curl к ALB
-![alt text](https://github.com/asad-bekov/dw-1/blob/main/img/8.png)
+### Задание 7
+![Запуск runC-контейнера](https://github.com/asad-bekov/hw-21/raw/main/img/7.png)
+![Ответ от Flask-приложения](https://github.com/asad-bekov/hw-21/raw/main/img/8.png)
 
 ---
 
