@@ -940,11 +940,11 @@ elasticsearch.serviceToken: "AAEAAWVsYXN0aWMva2liYW5hL215LWtpYmFuYS10b2tlbjp3cS1
 
 ![alt text](https://github.com/asad-bekov/dw1/blob/main/img/2.png)
 
-![alt text](https://github.com/asad-bekov/dw1/blob/main/img/4.png)
-
-- Скриншот Discover Kibana с сегодняшними логами nginx
-
 ![alt text](https://github.com/asad-bekov/dw1/blob/main/img/3.png)
+
+- Скриншот Discover Kibana с логами nginx
+
+![alt text](https://github.com/asad-bekov/dw1/blob/main/img/4.png)
 
 - Скриншот расписания снапшотов (Backup)
 
