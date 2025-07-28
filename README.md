@@ -33,6 +33,10 @@
 ## 2. Terraform: основная инфраструктура
 
 ### `main.tf`
+
+<details>
+<summary>Показать main.tf</summary>
+
 ```hcl
 terraform {
   required_providers {
@@ -50,8 +54,15 @@ provider "yandex" {
   zone                     = "ru-central1-a"
 }
 ```
+</details>
+
+---
 
 ### `network.tf`
+
+<details>
+<summary>Показать network.tf</summary>
+
 ```hcl
 resource "yandex_vpc_network" "default" {
   name = "default-network"
@@ -260,8 +271,15 @@ resource "yandex_vpc_security_group" "kibana" {
   }
 }
 ```
+</details>
+
+---
 
 ### `vm-web.tf`
+
+<details>
+<summary>Показать vm-web.tf</summary>
+
 ```hcl
 vm-web.tf
 resource "yandex_compute_instance" "web_1" {
@@ -324,8 +342,16 @@ resource "yandex_compute_instance" "web_2" {
   }
 }
 ```
+</details>
+
+---
 
 ### `load-balancer.tf`
+
+<details>
+<summary>Показать load-balancer.tf</summary>
+
+
 ```hcl
 resource "yandex_alb_target_group" "web_targets" {
   name = "web-target-group"
@@ -341,8 +367,16 @@ resource "yandex_alb_target_group" "web_targets" {
   }
 }
 ```
+</details>
+
+---
 
 ### `vm-elk.tf`
+
+<details>
+<summary>Показать vm-elk.tf</summary>
+
+
 ```hcl
 resource "yandex_compute_instance" "elastic" {
   name        = "elastic-vm"
@@ -410,8 +444,15 @@ resource "yandex_compute_instance" "kibana" {
   }
 }
 ```
+</details>
+
+---
 
 ### `bastion.tf`
+
+<details>
+<summary>Показать bastion.tf</summary>
+
 ```hcl
 resource "yandex_vpc_subnet" "subnet_a" {
   name           = "asad-subnet-a"
@@ -475,8 +516,15 @@ resource "yandex_compute_instance" "bastion" {
   }
 }
 ```
+</details>
+
+---
 
 ### `outputs.tf`
+
+<details>
+<summary>Показать outputs.tf</summary>
+
 ```hcl
 output "web_instance_1_ip" {
   value = yandex_compute_instance.web_1.network_interface.0.ip_address
@@ -515,14 +563,28 @@ output "kibana_ip" {
   value = yandex_compute_instance.kibana.network_interface.0.ip_address
 }
 ```
+</details>
+
+---
 
 ### `terraform.tfvars`
+
+<details>
+<summary>Показать outputs.tf</summary>
+
 ```hcl
 folder_id           = "b1gm0hnoge59gnkmh3dl"
 opensearch_password = "StrongSecurePassword123!"
 ```
+</details>
+
+---
 
 ### `variables.tf`
+
+<details>
+<summary>Показать variables.tf</summary>
+
 ```hcl
 variable "zone_a" {
   default = "ru-central1-a"
@@ -552,12 +614,17 @@ variable "opensearch_password" {
   sensitive = true
 }
 ```
+</details>
 
 ---
 
 ## 3. Ansible
 
 ### `inventory.ini`
+
+<details>
+<summary>Показать inventory.ini</summary>
+
 ```ini
 [bastion]
 158.160.61.212 ansible_user=ubuntu ansible_ssh_common_args=''
@@ -600,8 +667,15 @@ ansible_ssh_common_args='-o ProxyJump=ubuntu@158.160.61.212'
 elastic
 kibana 
 ```
+</details>
+
+---
 
 ### `playbook_zabbix_server.yml`
+
+<details>
+<summary>Показать playbook_zabbix_server.yml</summary>
+
 ```yaml
 - name: Deploy Zabbix Server + Web on Ubuntu
   hosts: zabbix_server
@@ -703,8 +777,15 @@ kibana
         state: restarted
         enabled: yes
 ```
+</details>
+
+---
 
 ### `playbook_zabbix_agent.yml`
+
+<details>
+<summary>Показать playbook_zabbix_agent.ym</summary>
+
 ```yaml
 - name: Install and configure Zabbix Agent on web servers
   hosts: web_servers
@@ -767,8 +848,15 @@ kibana
         state: restarted
 
 ```
+</details>
+
+---
 
 ### `playbook_filebeat.yml`
+
+<details>
+<summary>Показать playbook_filebeat.yml</summary>
+
 ```yaml
 - name: Install and configure Filebeat on web servers
   hosts: web_servers
@@ -802,11 +890,16 @@ kibana
         enabled: yes
 
 ```
+</details>
+
+---
 
 ### `playbook_clear_elk.yml`
+
+<details>
+<summary>Показать playbook_clear_elk.yml</summary>
+
 ```yaml
----
----
 - name: Полная очистка старого Elasticsearch и Docker
   hosts: elasticsearch
   become: yes
@@ -850,12 +943,17 @@ kibana
       apt:
         update_cache: yes
 ```
+</details>
 
 ---
 
 ## 4. Docker и конфиги ELK
 
 ### `docker-compose.yml` для Elasticsearch
+
+<details>
+<summary>Показать docker-compose.yml</summary>
+
 ```yaml
 version: '3.8'
 
@@ -877,8 +975,15 @@ services:
 volumes:
   esdata:
 ```
+</details>
+
+---
 
 ### `docker-compose.yml` для Kibana
+
+<details>
+<summary>Показать docker-compose.yml</summary>
+
 ```yaml
 version: '3.8'
 
@@ -893,8 +998,15 @@ services:
     ports:
       - "5601:5601"
 ```
+</details>
+
+---
 
 ### `filebeat.yml`
+
+<details>
+<summary>Показать filebeat.yml</summary>
+
 ```yaml
 filebeat.inputs:
   - type: filestream
@@ -910,8 +1022,15 @@ output.elasticsearch:
   hosts: ["http://10.3.0.25:9200"]
   api_key: "ZE8wApcBQvNq1GTz6sq-:CB11CkLbT_KLAWm2OGv9EA"
 ```
+</details>
+
+---
 
 ### `kibana.yml`
+
+<details>
+<summary>Показать kibana.yml</summary>
+
 ```yaml
 server.host: "0.0.0.0"
 
@@ -921,6 +1040,7 @@ elasticsearch.serviceToken: "AAEAAWVsYXN0aWMva2liYW5hL215LWtpYmFuYS10b2tlbjp3cS1
 # elasticsearch.username: "elastic"
 # elasticsearch.password: "1-2-3"
 ```
+</details>
 
 ---
 
